@@ -1,25 +1,12 @@
 class UrlMappings {
 
-	static mappings = {
-		"/$controller/$action?/$id?"{
-			constraints {
-				// apply constraints here
-			}
-		}
+    static mappings = {
 
-		"/"(view:"/index")
-		"500"(view:'/error')
-
-        /*
-
-        static mappings = {
-
-		"/$categoryId?" {
-            controller = "Category"
-            action = [GET: 'getCategory', POST:'addCategory',PUT:'putCategory' ,DELETE: 'notAllowed']
+        "/$bandId?" {
+            controller = "Band"
+            action = [GET: 'getBand', POST:'notAllowed',PUT:'notAllowed' ,DELETE: 'notAllowed']
         }
 
-	}
-         */
-	}
+    }
+
 }
