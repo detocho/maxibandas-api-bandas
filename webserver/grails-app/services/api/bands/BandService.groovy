@@ -58,5 +58,75 @@ class BandService {
 
     }
 
+    def add(def jsonBand){
+
+        Map jsonResult = [:]
+
+        def responseMessage = ''
+
+        Band newBand = new Band(
+
+                categoryId          : jsonBand?.category_id,
+                name                : jsonBand?.name,
+                title               : jsonBand?.title,
+                priceMin            : jsonBand?.price_min,
+                priceMax            : jsonBand?.price_max,
+                currencyType        : jsonBand?.currency_type,
+                locationId          : jsonBand?.location_id,
+                serviceLocations    : jsonBand?.service_locations,
+                eventsTypes         : jsonBand?.events_types,
+                managerId           : jsonBand?.manager_id,
+                webPage             : jsonBand?.web_page,
+                pictures            : jsonBand?.pictures,
+                urlVideos           : jsonBand?.url_videos,
+                description         : jsonBand?.description,
+
+                typeItem            : jsonBand?.type_item,
+                status              : 'active'
+        )
+
+        if (!newBand.validate()){
+            newBand.errors.allErrors.each {
+                responseMessage += MessageFormat.format(it.defaultMessage, it.arguments) + " "
+            }
+
+            throw new BadRequestException(responseMessage)
+        }
+
+        newBand.save()
+
+        jsonResult.id                   = newBand.id
+        jsonResult.category_id          = newBand.categoryId
+        jsonResult.name                 = newBand.name
+        jsonResult.title                = newBand.title
+        jsonResult.price_min            = newBand.priceMin
+        jsonResult.price_max            = newBand.priceMax
+        jsonResult.currency_type        = newBand.currencyType
+        jsonResult.location_id          = newBand.locationId
+        jsonResult.service_locations    = newBand.serviceLocations
+        jsonResult.events_types         = newBand.eventsTypes
+        jsonResult.manager_id           = newBand.managerId
+        jsonResult.web_page             = newBand.webPage
+        jsonResult.pictures             = newBand.pictures
+        jsonResult.url_videos           = newBand.urlVideos
+        jsonResult.description          = newBand.description
+
+        jsonResult.type_item            = newBand.typeItem
+        jsonResult.status               = newBand.status
+
+        jsonResult.date_registration    = newBand.dateRegistration
+        jsonResult.date_update          = newBand.dateUpdate
+        jsonResult.date_expired         = newBand.dateExpired
+        jsonResult.date_activation      = newBand.dateActivation
+        jsonResult.date_renovation      = newBand.dateRenovation
+        jsonResult.date_deleted         = (newBand.dateDeleted) ? newBand.dateDeleted : "null"
+
+        jsonResult
+    }
+
+    def put(def id, def jsonBand){
+
+    }
+
 
 }
