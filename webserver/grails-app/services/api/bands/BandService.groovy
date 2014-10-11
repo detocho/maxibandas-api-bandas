@@ -26,32 +26,8 @@ class BandService {
             throw  new NotFoundException("The bandId = "+bandId+" not found")
         }
 
-        jsonResult.id                   = bands.id
-        jsonResult.category_id          = bands.categoryId
-        jsonResult.name                 = bands.name
-        jsonResult.title                = bands.title
-        jsonResult.price_min            = bands.priceMin
-        jsonResult.price_max            = bands.priceMax
-        jsonResult.currency_type        = bands.currencyType
-        jsonResult.location_id          = bands.locationId
-        jsonResult.service_locations    = bands.serviceLocations
-        jsonResult.events_types         = bands.eventsTypes
-        jsonResult.manager_id           = bands.managerId
-        jsonResult.web_page             = bands.webPage
-        jsonResult.pictures             = bands.pictures
-        jsonResult.url_videos           = bands.urlVideos
-        jsonResult.description          = bands.description
 
-        jsonResult.type_item            = bands.typeItem
-        jsonResult.status               = bands.status
-
-        jsonResult.date_registration    = bands.dateRegistration
-        jsonResult.date_update          = bands.dateUpdate
-        jsonResult.date_expired         = bands.dateExpired
-        jsonResult.date_activation      = bands.dateActivation
-        jsonResult.date_renovation      = bands.dateRenovation
-        jsonResult.date_deleted         = (bands.dateDeleted) ? bands.dateDeleted : "null"
-
+        jsonResult =  getResult(bands)
         jsonResult
 
 
@@ -95,37 +71,96 @@ class BandService {
 
         newBand.save()
 
-        jsonResult.id                   = newBand.id
-        jsonResult.category_id          = newBand.categoryId
-        jsonResult.name                 = newBand.name
-        jsonResult.title                = newBand.title
-        jsonResult.price_min            = newBand.priceMin
-        jsonResult.price_max            = newBand.priceMax
-        jsonResult.currency_type        = newBand.currencyType
-        jsonResult.location_id          = newBand.locationId
-        jsonResult.service_locations    = newBand.serviceLocations
-        jsonResult.events_types         = newBand.eventsTypes
-        jsonResult.manager_id           = newBand.managerId
-        jsonResult.web_page             = newBand.webPage
-        jsonResult.pictures             = newBand.pictures
-        jsonResult.url_videos           = newBand.urlVideos
-        jsonResult.description          = newBand.description
-
-        jsonResult.type_item            = newBand.typeItem
-        jsonResult.status               = newBand.status
-
-        jsonResult.date_registration    = newBand.dateRegistration
-        jsonResult.date_update          = newBand.dateUpdate
-        jsonResult.date_expired         = newBand.dateExpired
-        jsonResult.date_activation      = newBand.dateActivation
-        jsonResult.date_renovation      = newBand.dateRenovation
-        jsonResult.date_deleted         = (newBand.dateDeleted) ? newBand.dateDeleted : "null"
-
+        jsonResult =  getResult(newBand)
         jsonResult
     }
 
     def put(def id, def jsonBand){
 
+        Map jsonResult = [:]
+        def responseMessage
+
+        if (!id){
+            throw new NotFoundException("You must provider id band")
+        }
+
+        def obteinedBand = Band.findById(id)
+
+        if (!obteinedBand){
+            throw new NotFoundException("The Band whit id =" +id+" not found")
+        }
+
+        //TODO debemos agregar un validador de json
+        //TODO debemos gestionar la api de seguridad
+
+        obteinedBand.categoryId          = jsonBand?.category_id
+        obteinedBand.name                = jsonBand?.name
+        obteinedBand.title               = jsonBand?.title
+        obteinedBand.priceMin            = jsonBand?.price_min
+        obteinedBand.priceMax            = jsonBand?.price_max
+        obteinedBand.currencyType        = jsonBand?.currency_type
+        obteinedBand.locationId          = jsonBand?.location_id
+        obteinedBand.serviceLocations    = jsonBand?.service_locations
+        obteinedBand.eventsTypes         = jsonBand?.events_types
+        obteinedBand.managerId           = jsonBand?.manager_id
+        obteinedBand.webPage             = jsonBand?.web_page
+        obteinedBand.pictures            = jsonBand?.pictures
+        obteinedBand.urlVideos           = jsonBand?.url_videos
+        obteinedBand.description         = jsonBand?.description
+
+        obteinedBand.typeItem            = jsonBand?.type_item
+        obteinedBand.status              = 'active'
+        obteinedBand.dateUpdate          = new Date()
+
+        if (!obteinedBand.validate()){
+            obteinedBand.errors.allErrors.each {
+                responseMessage += MessageFormat.format(it.defaultMessage, it.arguments) + " "
+            }
+            throw new BadRequestException(responseMessage)
+        }
+
+        obteinedBand.save()
+
+        jsonResult =  getResult(obteinedBand)
+        jsonResult
+
+
+    }
+
+    
+    
+    def getResult(def band){
+        
+        Map jsonResult = [:]
+
+        jsonResult.id                   = band.id
+        jsonResult.category_id          = band.categoryId
+        jsonResult.name                 = band.name
+        jsonResult.title                = band.title
+        jsonResult.price_min            = band.priceMin
+        jsonResult.price_max            = band.priceMax
+        jsonResult.currency_type        = band.currencyType
+        jsonResult.location_id          = band.locationId
+        jsonResult.service_locations    = band.serviceLocations
+        jsonResult.events_types         = band.eventsTypes
+        jsonResult.manager_id           = band.managerId
+        jsonResult.web_page             = band.webPage
+        jsonResult.pictures             = band.pictures
+        jsonResult.url_videos           = band.urlVideos
+        jsonResult.description          = band.description
+
+        jsonResult.type_item            = band.typeItem
+        jsonResult.status               = band.status
+
+        jsonResult.date_registration    = band.dateRegistration
+        jsonResult.date_update          = band.dateUpdate
+        jsonResult.date_expired         = band.dateExpired
+        jsonResult.date_activation      = band.dateActivation
+        jsonResult.date_renovation      = band.dateRenovation
+        jsonResult.date_deleted         = (band.dateDeleted) ? band.dateDeleted : "null"
+
+        jsonResult
+        
     }
 
 
