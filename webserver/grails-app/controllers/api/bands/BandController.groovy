@@ -18,7 +18,8 @@ class BandController {
         def method = request.method
 
         response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED)
-        response.setContentType("application/json; charset=utf-8")
+
+        setHeaders()
 
         def mapResult = [
                 message: "Method $method not allowed",
@@ -32,34 +33,107 @@ class BandController {
 
         def bandId = params.bandId
         def result
+        setHeaders()
 
         try{
             result = bandService.get(bandId)
             response.setStatus(HttpServletResponse.SC_OK)
-            response.setContentType "application/json; charset=utf-8"
             render result as GSON
 
         }catch (NotFoundException e){
-            response.setStatus(e.status)
-            response.setContentType "application/json; charset=utf-8"
-
-            def mapExcepction = [
-                    message: e.getMessage(),
-                    status: e.status,
-                    error: e.error
-            ]
-            render mapExcepction as GSON
+            renderException(e)
 
         }catch (Exception e){
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-            response.setContentType "application/json; charset=utf-8"
-            def mapExcepction = [
-                    message: e.getMessage(),
-                    status: HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    error: "internal_server_error"
-            ]
-            render mapExcepction as GSON
+            renderException(e)
         }
+
+    }
+
+    def addBand(){
+
+        def result
+        setHeaders()
+
+        try{
+
+            result = bandService.add(request.JSON)
+            response.setStatus(HttpServletResponse.SC_CREATED)
+            render result as GSON
+
+        }catch (BadRequestException e){
+
+            renderException(e)
+
+        }catch (Exception e){
+
+            renderException(e)
+        }
+    }
+
+    def putBand(){
+
+        def id = params.id
+        setHeaders()
+
+        try{
+
+            def modifiedBand = bandService.put(id, request.JSON)
+            response.setStatus(HttpServletResponse.SC_OK)
+            render modifiedBand as GSON
+
+        }catch(NotFoundException e){
+
+            renderException(e)
+
+        }catch(BadRequestException e){
+
+            renderException(e)
+
+        }catch(Exception e){
+
+            renderException(e)
+        }
+    }
+
+    def searchBand(){
+
+        setHeaders()
+
+        try{
+
+            def result = bandService.searchBand(params)
+            response.setStatus(HttpServletResponse.SC_OK)
+            render result as GSON
+            
+        }catch (BadRequestException e){
+
+            renderException(e)
+
+        }catch (Exception e){
+
+            renderException(e)
+        }
+    }
+
+    def setHeaders(){
+
+        response.setContentType "application/json; charset=utf-8"
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE");
+        response.setHeader("Access-Control-Max-Age", "86400");
+        response.setHeader("Access-Control-Allow-Headers", "application/json;charset=UTF-8");
+    }
+
+    def renderException(def e){
+
+        response.setStatus(e.status)
+
+        def mapExcepction = [
+                message: e.getMessage(),
+                status: e.status,
+                error: e.error
+        ]
+        render mapExcepction as GSON
 
     }
 
