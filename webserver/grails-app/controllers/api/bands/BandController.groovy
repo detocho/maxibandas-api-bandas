@@ -72,7 +72,7 @@ class BandController {
 
     def putBand(){
 
-        def id = params.id
+        def id = params.bandId
         setHeaders()
 
         try{
