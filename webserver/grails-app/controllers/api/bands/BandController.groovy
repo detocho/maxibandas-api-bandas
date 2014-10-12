@@ -104,7 +104,7 @@ class BandController {
             def result = bandService.searchBand(params)
             response.setStatus(HttpServletResponse.SC_OK)
             render result as GSON
-            
+
         }catch (BadRequestException e){
 
             renderException(e)
