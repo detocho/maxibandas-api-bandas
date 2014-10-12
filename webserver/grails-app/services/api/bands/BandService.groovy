@@ -60,7 +60,6 @@ class BandService {
                 pictures            : jsonBand?.pictures,
                 urlVideos           : jsonBand?.url_videos,
                 description         : jsonBand?.description,
-
                 typeItem            : jsonBand?.type_item,
                 status              : 'active'
         )
@@ -111,7 +110,6 @@ class BandService {
         obteinedBand.pictures            = jsonBand?.pictures
         obteinedBand.urlVideos           = jsonBand?.url_videos
         obteinedBand.description         = jsonBand?.description
-
         obteinedBand.typeItem            = jsonBand?.type_item
         obteinedBand.status              = 'active'
         obteinedBand.dateUpdate          = new Date()
@@ -146,7 +144,7 @@ class BandService {
                 date_registration_from:"dateRegistration",
                 date_resgitration_to:"dateRegistration",
                 date_activation_from:"dateActivation",
-                date_activation_to:"dateActivation"
+                date_activation_to:"dateActivation",
                 type_item:"typeItem"
         ]
 
