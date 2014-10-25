@@ -126,13 +126,27 @@ class BandController {
 
     def renderException(def e){
 
-        response.setStatus(e.status)
+        def statusCode
+        def error
+
+        try{
+            statusCode  = e.status
+            error       = e.error
+
+        }catch(Exception ex){
+
+            statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+            error = "internal_server_error"
+        }
+
+        response.setStatus(statusCode)
 
         def mapExcepction = [
                 message: e.getMessage(),
-                status: e.status,
-                error: e.error
+                status: statusCode,
+                error: error
         ]
+
         render mapExcepction as GSON
 
     }
