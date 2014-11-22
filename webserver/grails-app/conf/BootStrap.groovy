@@ -81,6 +81,7 @@ class BootStrap {
                         webPage:"",
                         typeItem:"destacado",
                         status:"active",
+                        attributes:[],
                         description:"Somos un mariachi con mas de 10 años de experiencia, nuestra musica es con hecha con alta " +
                                 "calidad, no te arrepntiras, miranos en el video"
 
@@ -121,6 +122,7 @@ class BootStrap {
                         webPage:"",
                         typeItem:"free",
                         status:"active",
+                        attributes:[],
                         description:"Somos un mariachi con mas de 10 años de experiencia, nuestra musica es con hecha con alta " +
                                 "calidad, no te arrepntiras, miranos en el video"
 

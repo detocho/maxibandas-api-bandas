@@ -63,9 +63,11 @@ grails.app.context = "/bands"
 environments {
     development {
         grails.logging.jul.usebridge = true
+        domainMainUsers = 'http://localhost:8888'
     }
     production {
         grails.logging.jul.usebridge = false
+        domainMainUsers = 'http://api.maxibanda.com.mx'
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
     test{

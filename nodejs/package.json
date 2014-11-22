@@ -1,0 +1,20 @@
+{
+  "name": "maxibandas-mocks",
+  "version": "0.0.1",
+  "private": true,
+  "author": "dpaz <davidpazgtz764@gmail.com>",
+  "scripts": {
+    "start": "node app"
+  },
+  "contributors": [
+    {
+      "name": "David Paz",
+      "email": "davidpazgtz764@gmail.com"
+    }
+
+  ],
+  "dependencies": {
+    "express": "3.1.0",
+    "underscore": "1.4.4"
+  }
+}

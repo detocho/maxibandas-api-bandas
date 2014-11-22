@@ -33,6 +33,7 @@ class Band {
     String  webPage
     List    pictures = []
     List    urlVideos = []
+    List    attributes = []
     String  description
 
     String  typeItem

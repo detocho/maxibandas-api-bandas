@@ -11,7 +11,7 @@ environments {
         grails {
             mongo {
                 host = "localhost"
-                databaseName = "mb_ands"
+                databaseName = "mb_bands"
             }
         }
     }

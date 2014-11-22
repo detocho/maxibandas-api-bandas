@@ -14,29 +14,15 @@ class BandController {
 
     def bandService
 
-    def notAllowed(){
-        def method = request.method
 
-        response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED)
-
-        setHeaders()
-
-        def mapResult = [
-                message: "Method $method not allowed",
-                status: HttpServletResponse.SC_METHOD_NOT_ALLOWED,
-                error:"not_allowed"
-        ]
-        render mapResult as GSON
-    }
 
     def getBand(){
 
-        def bandId = params.bandId
         def result
         setHeaders()
 
         try{
-            result = bandService.get(bandId)
+            result = bandService.get(params)
             response.setStatus(HttpServletResponse.SC_OK)
             render result as GSON
 
@@ -56,7 +42,7 @@ class BandController {
 
         try{
 
-            result = bandService.add(request.JSON)
+            result = bandService.add(params,request.JSON)
             response.setStatus(HttpServletResponse.SC_CREATED)
             render result as GSON
 
@@ -72,12 +58,11 @@ class BandController {
 
     def putBand(){
 
-        def id = params.bandId
         setHeaders()
 
         try{
 
-            def modifiedBand = bandService.put(id, request.JSON)
+            def modifiedBand = bandService.put(params, request.JSON)
             response.setStatus(HttpServletResponse.SC_OK)
             render modifiedBand as GSON
 
@@ -113,6 +98,21 @@ class BandController {
 
             renderException(e)
         }
+    }
+
+    def notAllowed(){
+        def method = request.method
+
+        response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED)
+
+        setHeaders()
+
+        def mapResult = [
+                message: "Method " +method +" not allowed",
+                status: HttpServletResponse.SC_METHOD_NOT_ALLOWED,
+                error:"not_allowed"
+        ]
+        render mapResult as GSON
     }
 
     def setHeaders(){
