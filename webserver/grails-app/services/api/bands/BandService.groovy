@@ -58,7 +58,7 @@ class BandService {
 
         }
 
-        //def access_token = validAccess.validAccessToken(params.access_token)
+        def access_token = validAccess.validAccessToken(params.access_token)
 
         def user_id = params.access_token.split('_')[2]
 
