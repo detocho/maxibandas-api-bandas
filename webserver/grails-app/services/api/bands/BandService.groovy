@@ -58,16 +58,13 @@ class BandService {
 
         }
 
-        def access_token = validAccess.validAccessToken(params.access_token)
+        //def access_token = validAccess.validAccessToken(params.access_token)
 
         def user_id = params.access_token.split('_')[2]
 
         def category = getCategory(jsonBand?.category_id)
         def location = getLocation(jsonBand?.location_id)
         def arrayPictures = validPictures(jsonBand?.pictures)
-
-        //definimos la construccion de titulo en base a la categoria y la location
-        // categoryNAme name banda locationEstate
 
         def title = category.name+" "+jsonBand?.name+" "+getStateLocation(location)
 
@@ -196,6 +193,13 @@ class BandService {
         def result
         def results = []
 
+        def DEFAULT_SEARCH_LIMIT = 20
+        def MAX_SEARCH_LIMIT = 200
+
+        def offset = params.offset ? Integer.parseInt(params.offset) : 0
+        def limit = params.limit ? Integer.parseInt(params.limit) : DEFAULT_SEARCH_LIMIT
+        limit = limit > MAX_SEARCH_LIMIT ? MAX_SEARCH_LIMIT : limit
+
         def SEARCH_PARAMS_MAP = [
 
                 manager_id:"managerId",
@@ -229,13 +233,16 @@ class BandService {
         if (!queryMap){
 
             jsonResult.total = 0
+            jsonResult.offset   = offset
+            jsonResult.limit    = limit
             jsonResult.bands = []
             return jsonResult
         }
 
         def bandCriteria = Band.createCriteria()
 
-        result = bandCriteria.list(){
+
+        result = bandCriteria.list(sort: "dateActivation", order: "desc", offset: offset, max:limit){
 
             params.each{ key, value ->
 
@@ -304,7 +311,6 @@ class BandService {
 
         // TODO añadimos la data que debemos mostrar completa
 
-
         result.each{
 
 
@@ -317,7 +323,7 @@ class BandService {
                     price_min            : it.priceMin,
                     price_max            : it.priceMax,
                     currency_type        : it.currencyType,
-                    location_id          : it.locationId,
+                    location             : getLocation(it.locationId),
                     service_locations    : it.serviceLocations,
                     events_types         : it.eventsTypes,
                     manager_id           : it.managerId,
@@ -339,8 +345,10 @@ class BandService {
             )
         }
 
-        jsonResult.total = results.size()
-        jsonResult.results = results
+        jsonResult.total    = result.totalCount //results.size()
+        jsonResult.offset   = offset
+        jsonResult.limit    = limit
+        jsonResult.results  = results
 
         jsonResult
 
@@ -430,6 +438,8 @@ class BandService {
 
 
         // TODO añadimos la data que debemos mostrar completa
+
+        def location = getLocation(band.locationId)
         
         Map jsonResult = [:]
 
@@ -440,7 +450,7 @@ class BandService {
         jsonResult.price_min            = band.priceMin
         jsonResult.price_max            = band.priceMax
         jsonResult.currency_type        = band.currencyType
-        jsonResult.location_id          = band.locationId
+        jsonResult.location             = location
         jsonResult.service_locations    = band.serviceLocations
         jsonResult.events_types         = band.eventsTypes
         jsonResult.manager_id           = band.managerId
