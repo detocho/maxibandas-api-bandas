@@ -204,6 +204,7 @@ class BandService {
 
                 manager_id:"managerId",
                 location_id:"locationId",
+                category_id: "categoryId",
                 //events_type:"eventsTypes"
                 status: "status",
                 date_registration_from:"dateRegistration",
