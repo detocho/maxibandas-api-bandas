@@ -64,10 +64,12 @@ environments {
     development {
         grails.logging.jul.usebridge = true
         domainMainUsers = 'http://localhost:8888'
+        ipValid ='0:0:0:0:0:0:0:1%0'
     }
     production {
         grails.logging.jul.usebridge = false
         domainMainUsers = 'http://api.maxibanda.com.mx'
+        ipValid ='69.162.90.50'
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
     test{

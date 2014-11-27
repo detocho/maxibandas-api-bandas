@@ -38,8 +38,20 @@ class BandService {
             throw  new NotFoundException("The bandId = "+bandId+" not found")
         }
 
+        def access_token
 
-        jsonResult =  getResult(bands)
+        if (params.access_token) {
+
+            access_token = validAccess.validAccessToken(params.access_token)
+            def user_id = params.access_token.split('_')[2]
+            if(user_id != bands.managerId){
+                throw new ConflictException("Your token  invalid for the user owner of the band")
+            }
+
+        }
+
+
+        jsonResult =  getResult(bands, access_token)
         jsonResult
 
 
@@ -100,7 +112,7 @@ class BandService {
 
         newBand.save()
 
-        jsonResult =  getResult(newBand)
+        jsonResult =  getResult(newBand, null)
         jsonResult
     }
 
@@ -181,7 +193,7 @@ class BandService {
 
         obteinedBand.save()
 
-        jsonResult =  getResult(obteinedBand)
+        jsonResult =  getResult(obteinedBand, null)
         jsonResult
 
 
@@ -371,6 +383,18 @@ class BandService {
         result
     }
 
+    def getUser(def userId){
+
+        def result = restService.getResource("/users/"+userId+"/")
+
+        if(result.status != HttpServletResponse.SC_OK){
+            throw new BadRequestException("The user_id = "+userId+" not found in users api")
+        }
+
+        result.data
+
+    }
+
     def getLocation(def locationId){
 
         def result = restService.getResource("/locations/"+locationId+"/")
@@ -435,7 +459,7 @@ class BandService {
 
 
     
-    def getResult(def band){
+    def getResult(def band, def access_token){
 
 
         // TODO añadimos la data que debemos mostrar completa
@@ -455,6 +479,27 @@ class BandService {
         jsonResult.service_locations    = band.serviceLocations
         jsonResult.events_types         = band.eventsTypes
         jsonResult.manager_id           = band.managerId
+
+
+        // TODO mapa de contacto vacio
+        Map  contact = [
+            "name":"",
+            "phone":"",
+            "email":""
+
+        ]
+        if (access_token || validAccess.isInternal()) {
+
+            def user = getUser(band.managerId)
+            contact.name    = user.name
+            contact.email   = user.email
+            contact.phone   = user.phone
+
+
+        }
+
+
+        jsonResult.contact              = contact
         jsonResult.web_page             = band.webPage
         jsonResult.pictures             = band.pictures
         jsonResult.url_videos           = band.urlVideos
