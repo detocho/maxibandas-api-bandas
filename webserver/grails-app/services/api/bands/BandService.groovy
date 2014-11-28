@@ -166,21 +166,21 @@ class BandService {
         def title = category.name+" "+jsonBand?.name+" "+getStateLocation(location)
 
         //obteinedBand.categoryId          = jsonBand?.category_id
-        obteinedBand.name                = jsonBand?.name
-        obteinedBand.title               = title
-        obteinedBand.priceMin            = jsonBand?.price_min
-        obteinedBand.priceMax            = jsonBand?.price_max
-        obteinedBand.currencyType        = jsonBand?.currency_type
-        obteinedBand.locationId          = jsonBand?.location_id
-        obteinedBand.serviceLocations    = jsonBand?.service_locations
-        obteinedBand.eventsTypes         = jsonBand?.events_types
+        obteinedBand.name                = jsonBand?.name ? jsonBand?.name : obteinedBand.name
+        obteinedBand.title               = title ? title : obteinedBand.title
+        obteinedBand.priceMin            = jsonBand?.price_min ? jsonBand?.price_min :obteinedBand.priceMin
+        obteinedBand.priceMax            = jsonBand?.price_max ? jsonBand?.price_max :obteinedBand.priceMax
+        obteinedBand.currencyType        = jsonBand?.currency_type ? jsonBand?.currency_type :obteinedBand.currencyType
+        obteinedBand.locationId          = jsonBand?.location_id ? jsonBand?.location_id : obteinedBand.locationId
+        obteinedBand.serviceLocations    = jsonBand?.service_locations ? jsonBand?.service_locations : obteinedBand.serviceLocations
+        obteinedBand.eventsTypes         = jsonBand?.events_types ? jsonBand?.events_types : obteinedBand.eventsTypes
         //obteinedBand.managerId           = jsonBand?.manager_id
-        obteinedBand.webPage             = jsonBand?.web_page
-        obteinedBand.pictures            = jsonBand?.pictures
-        obteinedBand.urlVideos           = jsonBand?.url_videos
-        obteinedBand.description         = jsonBand?.description
-        obteinedBand.typeItem            = jsonBand?.type_item
-        obteinedBand.attributtes         = jsonBand?.attributes ? jsonBand?.attributes : []
+        obteinedBand.webPage             = jsonBand?.web_page ? jsonBand?.web_page : obteinedBand.webPage
+        obteinedBand.pictures            = jsonBand?.pictures ? jsonBand?.pictures : obteinedBand.pictures
+        obteinedBand.urlVideos           = jsonBand?.url_videos ? jsonBand?.url_videos : obteinedBand.urlVideos
+        obteinedBand.description         = jsonBand?.description ? jsonBand?.description : obteinedBand.description
+        obteinedBand.typeItem            = jsonBand?.type_item ? jsonBand?.type_item : obteinedBand.typeItem
+        obteinedBand.attributes          = jsonBand?.attributes ? jsonBand?.attributes : []
         obteinedBand.status              = 'active'
         obteinedBand.dateUpdate          = new Date()
 
@@ -354,7 +354,7 @@ class BandService {
                     date_activation      : it.dateActivation,
                     date_renovation      : it.dateRenovation,
                     date_deleted         : (it.dateDeleted) ? it.dateDeleted : "null",
-                    attributes           : it.attributes ? it.attributtes: []
+                    attributes           : it.attributes ? it.attributes: []
             )
         }
 
