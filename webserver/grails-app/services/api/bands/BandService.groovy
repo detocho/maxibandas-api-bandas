@@ -1,5 +1,7 @@
 package api.bands
 
+import rest.RestService
+
 import java.text.MessageFormat
 import org.apache.ivy.plugins.conflict.ConflictManager
 import grails.converters.*
@@ -385,6 +387,7 @@ class BandService {
 
     def getUser(def userId){
 
+        restService.defineServiceType('users')
         def result = restService.getResource("/users/"+userId+"/")
 
         if(result.status != HttpServletResponse.SC_OK){
@@ -397,10 +400,11 @@ class BandService {
 
     def getLocation(def locationId){
 
+        restService.defineServiceType('locations')
         def result = restService.getResource("/locations/"+locationId+"/")
 
         if(result.status != HttpServletResponse.SC_OK){
-            throw new BadRequestException("The location_id = "+locationId+" not found in categories api")
+            throw new BadRequestException("The location_id = "+locationId+" not found in locations api")
         }
 
         result.data
@@ -410,6 +414,7 @@ class BandService {
 
     def getCategory(def categoryId){
 
+        restService.defineServiceType('categories')
         def result = restService.getResource("/categories/"+categoryId+"/")
 
         if(result.status != HttpServletResponse.SC_OK){

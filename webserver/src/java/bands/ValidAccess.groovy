@@ -76,12 +76,12 @@ class ValidAccess{
 
         if (userIdA != userIdB){
 
-           throw new ConflictException("The access_token is not valid")
+            throw new ConflictException("The access_token is not valid")
         }
 
         if (status != 'active'){
 
-           throw new ConflictException("The user is not active")
+            throw new ConflictException("The user is not active")
         }
 
         def cal             = Calendar.instance
@@ -109,7 +109,8 @@ class ValidAccess{
 
         def grailsApplication = new DefaultGrailsApplication()
 
-        def ipValid = grailsApplication.config.ipValid
+
+        def ipValidArray = grailsApplication.config.ipValidArray
 
         def result = false
         def request = WebUtils.retrieveGrailsWebRequest().getCurrentRequest()
@@ -118,13 +119,22 @@ class ValidAccess{
         InetAddress inetAddress = InetAddress.getByName(remoteAddress)
         if (inetAddress instanceof Inet6Address) {
 
-            if (remoteAddress == ipValid){
-                result = true
+            for(ipCall in ipValidArray){
+
+                if (remoteAddress == ipCall){
+                    result = true
+                }
+
             }
 
         } else {
-            if (remoteAddress == ipValid){
-                result = true
+
+            for(ipCall in ipValidArray){
+
+                if (remoteAddress == ipCall){
+                    result = true
+                }
+
             }
 
         }

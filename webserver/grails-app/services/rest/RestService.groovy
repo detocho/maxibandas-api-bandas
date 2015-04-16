@@ -1,25 +1,9 @@
 package rest
 
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
-import grails.converters.JSON
-import javassist.NotFoundException
-import net.sf.json.JSONNull
-import org.codehaus.groovy.grails.web.json.JSONObject
-import bands.exceptions.NotFoundException
-import bands.exceptions.ConflictException
-import bands.exceptions.BadRequestException
-
-import grails.util.Environment
-import groovyx.net.http.*
-import groovyx.net.http.HTTPBuilder
-
-import static groovyx.net.http.ContentType.*
-import static groovyx.net.http.Method.*
-
 import groovyx.net.http.RESTClient
-
 import javax.servlet.http.HttpServletResponse
-import grails.plugin.gson.converters.GSON
+
 
 
 
@@ -30,12 +14,31 @@ class RestService {
     static transactional = true
 
     def grailsApplication = new DefaultGrailsApplication()
-    def urlBase = grailsApplication.config.domainMainUsers
 
+    def urlBaseUser         = grailsApplication.config.domainMainUsers
+    def urlBaseLocations    = grailsApplication.config.domainMainLocations
+    def urlBaseCategories   = grailsApplication.config.domainMainCategories
 
+    def restClient = new RESTClient(urlBaseUser)
 
-    def restClient  = new RESTClient(urlBase)
+    def defineServiceType (def typeRestService){
 
+        switch (typeRestService){
+
+            case 'users':
+                restClient = new RESTClient(urlBaseUser)
+                break
+            case 'locations':
+                restClient = new RESTClient(urlBaseLocations)
+                break
+            case 'categories':
+                restClient = new RESTClient(urlBaseCategories)
+                break
+            default:
+                restClient = new RESTClient(urlBaseUser)
+                break
+        }
+    }
 
     def getResource(def resource, def queryParams){
 
