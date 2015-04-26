@@ -72,9 +72,9 @@ environments {
     production {
         grails.logging.jul.usebridge = false
         //domainMainUsers = 'http://api.maxibanda.com.mx'
-        domainMainUsers         = 'http://ec2-54-148-189-131.us-west-2.compute.amazonaws.com'
-        domainMainLocations     = 'http://ec2-52-10-118-212.us-west-2.compute.amazonaws.com'
-        domainMainCategories    = 'http://ec2-52-10-118-212.us-west-2.compute.amazonaws.com'
+        domainMainUsers         = 'http://api.maxibanda.mx'
+        domainMainLocations     = 'http://ec2-54-69-9-226.us-west-2.compute.amazonaws.com'
+        domainMainCategories    = 'http://ec2-54-69-9-226.us-west-2.compute.amazonaws.com'
         ipValid ='69.162.90.50'
         ipValidArray = ['54.148.189.131', '52.10.118.212', '54.148.217.158', '54.200.67.254']
         // TODO: grails.serverURL = "http://www.changeme.com"

@@ -493,7 +493,8 @@ class BandService {
             "email":""
 
         ]
-        if (access_token || validAccess.isInternal()) {
+
+        //if (access_token || validAccess.isInternal()) {
 
             def user = getUser(band.managerId)
             contact.name    = user.name
@@ -501,7 +502,7 @@ class BandService {
             contact.phone   = user.phone
 
 
-        }
+        //}
 
 
         jsonResult.contact              = contact
